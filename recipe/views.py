@@ -17,7 +17,7 @@ from rest_framework.renderers import JSONRenderer, TemplateHTMLRenderer
 from accounts.models import ProfileUser
 # viewsets
 class ViewsetsRecipe(viewsets.ModelViewSet):
-    permission_classes = [IsAuthorOrReadOnly]
+    permission_classes = [IsAuthorOrReadOnly, IsAuthenticated]
     queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
     def perform_create(self, serializer):

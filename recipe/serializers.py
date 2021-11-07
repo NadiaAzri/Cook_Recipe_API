@@ -17,7 +17,7 @@ class RecipeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Recipe
-        fields = ('id', 'title', 'author', 'style', 'ingredients', 'description','created','updated', 'comments', 'likes', 'dislikes')
+        fields = ('id', 'title', 'author','thumbnail', 'style', 'ingredients', 'description','created','updated', 'comments', 'likes', 'dislikes')
     
     def get_author(self, obj):
         return obj.author.user_name
