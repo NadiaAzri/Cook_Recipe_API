@@ -8,7 +8,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('user/', include('accounts.urls')),
     path('', include('recipe.urls')),
-    #path('api-auth/', include('rest_framework.urls')),
     path('cook/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('cook/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]

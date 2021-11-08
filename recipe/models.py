@@ -44,13 +44,17 @@ class Recipe(models.Model):
 
     def __str__(self):
         return self.title
-    
+  
     @property
-    def get_total_likes(self):
+    def total_comments(self):
+          return Comment.objects.filter(recipe=self).count()
+
+    @property
+    def total_likes(self):
           return Like.objects.filter(recipe=self).count()
     
     @property
-    def get_total_dislikes(self):
+    def total_dislikes(self):
          return DisLike.objects.filter(recipe=self).count()
 
 
@@ -75,13 +79,25 @@ class Comment(models.Model):
         if self.parent is None:
             return True
         return False
+    
+    @property
+    def replies(self):
+         if self.is_parent:
+            return Comment.objects.filter(parent=self).order_by('-created').all()
+         return 0
+
+    @property
+    def total_replies(self):
+         if self.is_parent:
+            return Comment.objects.filter(parent=self).order_by('-created').all().count()
+         return 0
   
     @property
-    def get_total_likes(self):
+    def total_likes(self):
           return Like.objects.filter(comment=self).count()
     
     @property
-    def get_total_dislikes(self):
+    def total_dislikes(self):
          return DisLike.objects.filter(comment=self).count()
 
 
@@ -99,6 +115,10 @@ class Like(models.Model):
         if self.comment is not None:
          return str(self.comment.body)[:30]
         return str(self.recipe.title)
+    
+    class Meta:
+        unique_together = (('users', 'recipe'),('users', 'comment'),)
+        index_together = (('users', 'recipe'),('users', 'comment'))
 
 class DisLike(models.Model):
     ''' Dislike  comment '''
@@ -114,3 +134,7 @@ class DisLike(models.Model):
         if self.comment is not None:
          return str(self.comment.body)[:30]
         return str(self.recipe.title)
+    
+    class Meta:
+        unique_together = (('users', 'recipe'),('users', 'comment'),)
+        index_together = (('users', 'recipe'),('users', 'comment'))
