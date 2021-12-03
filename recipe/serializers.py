@@ -9,18 +9,7 @@ user = settings.AUTH_USER_MODEL
 
 # TODO: add the user profile (all his recipes)
 
-class RecipeSerializer(serializers.ModelSerializer):
-    author = serializers.ReadOnlyField(source='author.user_name')
-    comments = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
-    likes = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
-    dislikes = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
-    
 
-    class Meta:
-        model = Recipe
-        fields = ('id', 'title', 'author','thumbnail', 'style', 'ingredients', 'description','created','updated','total_comments','total_likes','total_dislikes', 'comments', 'likes', 'dislikes')
-    
- 
 class CommentSerializer(serializers.ModelSerializer):
     author = serializers.ReadOnlyField(source='author.user_name')
     recipe = serializers.ReadOnlyField(source='recipe.title')
@@ -30,3 +19,35 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = ('id','body', 'parent', 'author', 'recipe','created','updated', 'total_replies','total_likes','total_dislikes','likes', 'dislikes')
+
+class LikeSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Like
+        fields = ('id','recipe', 'comment', 'users','created','updated',)
+        depth = 1
+
+
+class DisLikeSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = DisLike
+        fields = ('id','recipe', 'comment', 'users','created','updated',)
+        depth = 1
+
+
+
+class RecipeSerializer(serializers.ModelSerializer):
+    # author = serializers.ReadOnlyField(source='author.user_name')
+    # comments = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+    comments = CommentSerializer(many=True, required=False)
+    likes = LikeSerializer(many=True, required=False)
+    dislikes = DisLikeSerializer(many=True, required=False)
+    
+
+    class Meta:
+        model = Recipe
+        fields = ('id', 'title', 'author','thumbnail', 'style', 'ingredients', 'description','created','updated','total_comments','total_likes','total_dislikes', 'comments', 'likes', 'dislikes')
+        depth = 1
+    
+ 
