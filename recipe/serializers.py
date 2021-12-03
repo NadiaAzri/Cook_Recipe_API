@@ -7,19 +7,8 @@ from django.conf import settings
 
 user = settings.AUTH_USER_MODEL
 
+
 # TODO: add the user profile (all his recipes)
-
-
-class CommentSerializer(serializers.ModelSerializer):
-    author = serializers.ReadOnlyField(source='author.user_name')
-    recipe = serializers.ReadOnlyField(source='recipe.title')
-    likes = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
-    dislikes = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
-    
-    class Meta:
-        model = Comment
-        fields = ('id','body', 'parent', 'author', 'recipe','created','updated', 'total_replies','total_likes','total_dislikes','likes', 'dislikes')
-
 class LikeSerializer(serializers.ModelSerializer):
     
     class Meta:
@@ -36,6 +25,16 @@ class DisLikeSerializer(serializers.ModelSerializer):
         depth = 1
 
 
+class CommentSerializer(serializers.ModelSerializer):
+    # author = serializers.ReadOnlyField(source='author.user_name')
+    # recipe = serializers.ReadOnlyField(source='recipe.title')
+    likes = LikeSerializer(many=True, required=False)
+    dislikes = DisLikeSerializer(many=True, required=False)
+    class Meta:
+        model = Comment
+        fields = ('id','body', 'parent', 'author', 'recipe','created','updated', 'total_replies','total_likes','total_dislikes','likes', 'dislikes')
+        depth = 1
+        
 
 class RecipeSerializer(serializers.ModelSerializer):
     # author = serializers.ReadOnlyField(source='author.user_name')
