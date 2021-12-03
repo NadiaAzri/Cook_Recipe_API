@@ -7,6 +7,7 @@ from django.conf import settings
 
 user = settings.AUTH_USER_MODEL
 
+# TODO: add the user profile (all his recipes)
 
 class RecipeSerializer(serializers.ModelSerializer):
     author = serializers.ReadOnlyField(source='author.user_name')
