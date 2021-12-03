@@ -13,7 +13,7 @@ router3.register('reply', views.ViewsetsReply, basename='replies')
 
 urlpatterns = [
     # Viewsets
-    path('cook/recipe/<str:recipe_pk>/comment/<str:parent_pk>/', include(router3.urls)),
-    path('cook/recipe/<str:recipe_pk>/', include(router2.urls)),
+    path('cook/recipes/<str:recipe_pk>/comments/<str:parent_pk>/', include(router3.urls)),
+    path('cook/recipes/<str:recipe_pk>/', include(router2.urls)),
     path('cook/', include(router.urls)),
 ]
