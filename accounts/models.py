@@ -44,6 +44,7 @@ class ProfileUser(AbstractBaseUser, PermissionsMixin):
         'about'), max_length=500, blank=True)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)
+    picture = models.ImageField(default='')
 
     objects = CustomAccountManager()
 
