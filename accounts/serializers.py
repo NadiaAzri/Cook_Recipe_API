@@ -1,3 +1,4 @@
+from typing import ClassVar
 from rest_framework import serializers
 from .models import ProfileUser
 
@@ -12,7 +13,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ProfileUser
-        fields = ('email', 'user_name', 'password')
+        fields = ('email', 'user_name', 'first_name', 'password', 'about',)
         extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
@@ -23,3 +24,10 @@ class CustomUserSerializer(serializers.ModelSerializer):
             instance.set_password(password)
         instance.save()
         return instance
+
+
+class ProfileUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProfileUser
+        fields = ('email', 'user_name', 'password')
+    pass
